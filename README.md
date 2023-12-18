@@ -1,6 +1,6 @@
 # capacitor-bugly
 
-Bugly plugin for Capacitor
+📱 Bugly plugin for Capacitor
 
 ## Install
 
