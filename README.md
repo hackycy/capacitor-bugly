@@ -1,5 +1,7 @@
 # capacitor-bugly
 
+![npm](https://img.shields.io/npm/v/capacitor-bugly)
+
 📱 Bugly plugin for Capacitor
 
 ## Install
