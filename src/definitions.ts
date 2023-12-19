@@ -7,9 +7,14 @@ declare module '@capacitor/cli' {
      */
     Bugly?: {
       /**
-       * Bugly App ID
+       * Bugly App ID (Andoid)
        */
-      appId?: string;
+      androidAppId?: string;
+
+      /**
+       * Bugly App ID (iOS)
+       */
+      iOSAppId?: string;
 
       /**
        * Debug Mode

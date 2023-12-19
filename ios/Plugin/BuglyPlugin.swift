@@ -14,7 +14,7 @@ public class BuglyPlugin: CAPPlugin {
     public override func load() {
         super.load()
         
-        let appId = getConfig().getString("appId")
+        let appId = getConfig().getString("iOSAppId")
         let debug = getConfig().getBoolean("debug", false)
         
         let config = BuglyConfig()

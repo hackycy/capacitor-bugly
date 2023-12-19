@@ -25,7 +25,7 @@ public class BuglyPlugin extends Plugin {
         this.prefs = this.getContext().getSharedPreferences(WebView.WEBVIEW_PREFS_NAME, Activity.MODE_PRIVATE);
         this.editor = this.prefs.edit();
 
-        String appId = this.getConfig().getString("appId");
+        String appId = this.getConfig().getString("androidAppId");
         Boolean debug = this.getConfig().getBoolean("debug", false);
         String deviceId = this.prefs.getString("buglyAppUUID", UUID.randomUUID().toString());
         this.editor.putString("buglyAppUUID", deviceId);
