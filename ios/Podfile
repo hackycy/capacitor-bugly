@@ -15,3 +15,17 @@ end
 target 'PluginTests' do
   capacitor_pods
 end
+
+static_frameworks = ['Bugly']
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if static_frameworks.include?(pod.name)
+      def pod.static_framework?;
+        true
+      end
+      def pod.build_type;
+        Pod::BuildType.static_library
+      end
+    end
+  end
+end

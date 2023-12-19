@@ -2,20 +2,6 @@ require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-static_frameworks = ['Bugly']
-pre_install do |installer|
-  installer.pod_targets.each do |pod|
-    if static_frameworks.include?(pod.name)
-      def pod.static_framework?;
-        true
-      end
-      def pod.build_type;
-        Pod::BuildType.static_library
-      end
-    end
-  end
-end
-
 Pod::Spec.new do |s|
   s.name = 'CapacitorBugly'
   s.version = package['version']
