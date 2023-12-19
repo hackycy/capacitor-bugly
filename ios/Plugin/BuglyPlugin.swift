@@ -14,23 +14,60 @@ public class BuglyPlugin: CAPPlugin {
     public override func load() {
         super.load()
         
-        let appId = getConfig().getString("iOSAppId")
-        let debug = getConfig().getBoolean("debug", false)
-        
-        let config = BuglyConfig()
-        config.debugMode = debug
-        config.deviceIdentifier = deviceID
-        config.unexpectedTerminatingDetectionEnable = true
-        
-        Bugly.start(withAppId: appId, config: config)
+        let autoInit = getConfig().getBoolean("autoInit", true)
+        if (autoInit) {
+            self.initBugly()
+        }
     }
 
-    @objc func echo(_ call: CAPPluginCall) {
+    @objc func initCrashReport(_ call: CAPPluginCall) {
+        self.initBugly()
+        call.resolve()
+    }
+    
+    @objc func setUserValue(_ call: CAPPluginCall) {
+        guard let key = call.getString("key"), let value = call.getString("value") else {
+            call.reject("User Data is Empty")
+            return
+        }
+        
+        Bugly.setUserValue(value, forKey: key)
+        call.resolve()
+    }
+    
+    @objc func setUserSceneTag(_ call: CAPPluginCall) {
+        guard let tag = call.getInt("tag") else {
+            call.reject("Tag is empty")
+            return
+        }
+        
+        Bugly.setTag(UInt(tag))
         call.resolve()
     }
 
     private func randomString(length: Int) -> String {
         let letters: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<length).map { _ in letters.randomElement()! })
+    }
+    
+    private func initBugly() {
+        let appId = getConfig().getString("iOSAppId")
+        let debug = getConfig().getBoolean("debug", false)
+        let enableUnexpectedTerminatingDetection = getConfig().getBoolean("enableUnexpectedTerminatingDetection", false)
+        let enableViewControllerTracking = getConfig().getBoolean("enableViewControllerTracking", true)
+        let enableSymbolicateInProcess = getConfig().getBoolean("enableSymbolicateInProcess", true)
+        let enableBlockMonitor = getConfig().getBoolean("enableBlockMonitor", false)
+        let blockMonitorTimeout = getConfig().getInt("blockMonitorTimeout", 15)
+        
+        let config = BuglyConfig()
+        config.debugMode = debug
+        config.deviceIdentifier = deviceID
+        config.unexpectedTerminatingDetectionEnable = enableUnexpectedTerminatingDetection
+        config.viewControllerTrackingEnable = enableViewControllerTracking
+        config.symbolicateInProcessEnable = enableSymbolicateInProcess
+        config.blockMonitorEnable = enableBlockMonitor
+        config.blockMonitorTimeout = TimeInterval(blockMonitorTimeout)
+        
+        Bugly.start(withAppId: appId, config: config)
     }
 }

@@ -11,6 +11,24 @@ npm install capacitor-bugly
 npx cap sync
 ```
 
+## Setup
+
+Edit your `capacitor.config.json` like below
+
+``` json
+// capacitor.config.json
+{
+	"appId": "**.***.**",
+	"appName": "Name",
+	"plugins": {
+		"Bugly": {
+			"androidAppId": "**",
+      "iOSAppId": "**"
+		}
+	}
+}
+```
+
 ## API
 
 <docgen-index>
