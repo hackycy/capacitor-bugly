@@ -22,9 +22,9 @@ Edit your `capacitor.config.json` like below
 	"appName": "Name",
 	"plugins": {
 		"Bugly": {
-            "androidAppId": "**",
-            "iOSAppId": "**",
-            "debug": false
+			"androidAppId": "**",
+			"iOSAppId": "**",
+			"debug": false
 		}
 	}
 }
