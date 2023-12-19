@@ -42,7 +42,6 @@ Edit your `capacitor.config.json` like below
 </docgen-index>
 
 <docgen-api>
-
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
 ### initCrashReport()
