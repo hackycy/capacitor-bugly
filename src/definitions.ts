@@ -32,6 +32,11 @@ declare module '@capacitor/cli' {
       enableRecordAnrMainStack?: boolean;
 
       /**
+       * Network synchronization data (millisecond) @default 10000 (Andoid)
+       */
+      appReportDelay?: number
+
+      /**
        * Abnormal exit event recording switch @default false (iOS)
        */
       enableUnexpectedTerminatingDetection?: boolean;

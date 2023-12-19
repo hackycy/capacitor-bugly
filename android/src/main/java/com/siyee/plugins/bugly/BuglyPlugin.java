@@ -10,6 +10,10 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.plugin.WebView;
 import com.tencent.bugly.crashreport.CrashReport;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.UUID;
 
 @CapacitorPlugin(name = "Bugly")
@@ -67,6 +71,7 @@ public class BuglyPlugin extends Plugin {
         boolean debug = this.getConfig().getBoolean("debug", false);
         boolean enableCatchAnrTrace = this.getConfig().getBoolean("enableCatchAnrTrace", false);
         boolean enableRecordAnrMainStack = this.getConfig().getBoolean("enableRecordAnrMainStack", true);
+        int appReportDelay = this.getConfig().getInt("appReportDelay", 10000);
 
         String deviceId = this.prefs.getString("buglyAppUUID", UUID.randomUUID().toString());
         this.editor.putString("buglyAppUUID", deviceId);
@@ -76,8 +81,35 @@ public class BuglyPlugin extends Plugin {
         strategy.setDeviceModel(Build.MODEL);
         strategy.setEnableCatchAnrTrace(enableCatchAnrTrace);
         strategy.setEnableRecordAnrMainStack(enableRecordAnrMainStack);
+        strategy.setAppReportDelay(appReportDelay);
+
+        String processName = getProcessName(android.os.Process.myPid());
+        strategy.setUploadProcess(processName == null || processName.equals(getContext().getPackageName()));
 
         // init
         CrashReport.initCrashReport(getActivity().getApplicationContext(), androidAppId, debug, strategy);
+    }
+
+    private static String getProcessName(int pid) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 }
