@@ -1,6 +1,6 @@
 {
   "name": "capacitor-bugly",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Bugly plugin for Capacitor",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
